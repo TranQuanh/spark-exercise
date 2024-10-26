@@ -55,3 +55,22 @@ aggDF = genderDF \
                 f.sum('num_female').alias('num_female') ) \
         .orderBy('Country')
 aggDF.show(100)
+
+countsqlDF = spark.sql(
+    """
+    SELECT  
+        Country,
+        SUM(CASE 
+                WHEN LOWER(Gender) = 'male' OR LOWER(Gender) = 'm' THEN 1
+                ELSE 0
+            END) AS num_male,
+        SUM(CASE 
+                WHEN LOWER(Gender) = 'female' OR LOWER(Gender) = 'f' THEN 1
+                ELSE 0
+            END) AS num_female
+    FROM survey_view
+    GROUP BY Country
+    ORDER BY Country;
+    """
+)
+countsqlDF.show()
