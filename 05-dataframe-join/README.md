@@ -18,23 +18,25 @@ docker exec -ti spark-spark-worker-1 ls -la /data/dataframe-join
 **Copy file từ host vào trong container:**
 
 ```shell
-for f in 05-dataframe-join/data/d1/*.json; do docker cp $f spark-spark-worker-1:/data/dataframe-join/d1/; done
+$files = Get-ChildItem -Path "05-dataframe-join\data\d1\*.json"
+foreach ($file in $files) {
+    docker cp $file.FullName spark-spark-worker-1:/data/dataframe-join/d1/
+}
+
 ```
 
 ```shell
-for f in 05-dataframe-join/data/d2/*.json; do docker cp $f spark-spark-worker-1:/data/dataframe-join/d2/; done
+$files = Get-ChildItem -Path "05-dataframe-join\data\d2\*.json"
+foreach ($file in $files) {
+    docker cp $file.FullName spark-spark-worker-1:/data/dataframe-join/d2/
+}
+
 ```
 
 ## 2. Chạy chương trình
 
 ```shell
-docker container stop dataframe-join || true &&
-docker container rm dataframe-join || true &&
-docker run -ti --name dataframe-join \
---network=streaming-network \
--v ./:/spark \
--v spark_data:/data \
-unigap/spark:3.5 spark-submit /spark/05-dataframe-join/dataframe_join.py
+docker container stop dataframe-join; docker container rm dataframe-join ; docker run -ti --name dataframe-join --network=streaming-network -v ${PWD}:/spark -v spark_data:/data unigap/spark:3.5 spark-submit /spark/05-dataframe-join/dataframe_join.py
 ```
 
 ## 3. Yêu cầu
