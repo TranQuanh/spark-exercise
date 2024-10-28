@@ -23,13 +23,8 @@ docker cp 06-window-function/data/summary.parquet spark-spark-worker-1:/data/win
 ## 2. Chạy chương trình
 
 ```shell
-docker container stop window-function || true &&
-docker container rm window-function || true &&
-docker run -ti --name window-function \
---network=streaming-network \
--v ./:/spark \
--v spark_data:/data \
-unigap/spark:3.5 spark-submit /spark/06-window-function/window_function.py
+docker container stop window-function; docker container rm window-function;
+docker run -ti --name window-function --network=streaming-network -v "${PWD}:/spark" -v spark_data:/data unigap/spark:3.5 spark-submit /spark/06-window-function/window_function.py 
 ```
 
 ## 3. Yêu cầu
