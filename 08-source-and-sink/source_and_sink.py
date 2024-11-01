@@ -15,7 +15,7 @@ if __name__ == '__main__':
     spark = SparkSession.builder \
         .config(conf=spark_conf) \
         .getOrCreate()
-
+    spark.sparkContext.setLogLevel("ERROR")
     log = Log4j(spark)
 
     flight_time_df = spark.read.parquet("/data/source-and-sink/flight-time.parquet")

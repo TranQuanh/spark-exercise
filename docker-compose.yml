@@ -24,6 +24,7 @@ services:
     command: >
       /bin/bash -c "
       pip install py4j jupyter && 
+      export PATH=$PATH:~/.local/bin &&
       cd /spark &&
       jupyter notebook --ip=0.0.0.0 --no-browser --allow-root;
       "
